@@ -1,0 +1,28 @@
+📸 DOSSIER IMAGES - INSTRUCTIONS
+
+Placez vos captures d'écran du jeu Backrooms ici !
+
+Fichiers nécessaires :
+- Video.mp4 ✅ (DÉJÀ AJOUTÉ - Bande-annonce du jeu)
+- screenshot1.jpg (ou .png) - Suggestion : Chat de proximité en action
+- screenshot2.jpg (ou .png) - Suggestion : Monstre en chasse
+- screenshot3.jpg (ou .png) - Suggestion : Mode multijoueur
+- screenshot4.jpg (ou .png) - Suggestion : Menu 3D immersif
+
+Recommandations :
+✓ Résolution : 1920x1080 ou supérieure
+✓ Format : JPG (pour la taille) ou PNG (pour la qualité)
+✓ Compression : 80-90% pour JPG
+✓ Contenu : Montrez les meilleurs aspects de votre jeu !
+
+Suggestions de captures pour mettre en valeur vos fonctionnalités :
+1. Joueurs utilisant le chat de proximité
+2. Un monstre poursuivant un joueur
+3. Plusieurs joueurs en coopération
+4. Le menu 3D du jeu
+5. Différents niveaux avec plusieurs sorties
+6. Un screamer terrifiant
+
+Astuce : Utilisez la touche F12 dans UE5 pour prendre des captures d'écran haute résolution !
+
+Une fois vos images ajoutées, supprimez ce fichier.
