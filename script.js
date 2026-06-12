@@ -1,4 +1,235 @@
 // ========================================
+// LIVE STATISTICS SYSTEM
+// ========================================
+
+// Configuration des statistiques
+const STATS_CONFIG = {
+    playersOnline: {
+        min: 15,
+        max: 250,
+        updateInterval: 5000, // 5 secondes
+        variance: 10
+    },
+    totalDownloads: {
+        base: 12847,
+        increment: 1,
+        updateInterval: 30000 // 30 secondes
+    },
+    totalPlayers: {
+        base: 45623,
+        increment: 2,
+        updateInterval: 45000 // 45 secondes
+    }
+};
+
+// Variables globales pour les stats
+let currentStats = {
+    playersOnline: 0,
+    totalDownloads: STATS_CONFIG.totalDownloads.base,
+    totalPlayers: STATS_CONFIG.totalPlayers.base
+};
+
+// Fonction pour animer un compteur
+function animateCounter(element, start, end, duration = 1000) {
+    if (!element) return;
+    
+    const range = end - start;
+    const increment = range / (duration / 16);
+    let current = start;
+    
+    element.classList.add('counting');
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+            current = end;
+            clearInterval(timer);
+            element.classList.remove('counting');
+        }
+        element.textContent = Math.floor(current).toLocaleString('fr-FR');
+    }, 16);
+}
+
+// Fonction pour formater les nombres
+function formatNumber(num) {
+    return num.toLocaleString('fr-FR');
+}
+
+// Initialiser les statistiques
+function initializeStats() {
+    // Joueurs en ligne - nombre aléatoire initial
+    const initialPlayers = Math.floor(
+        Math.random() * (STATS_CONFIG.playersOnline.max - STATS_CONFIG.playersOnline.min) + 
+        STATS_CONFIG.playersOnline.min
+    );
+    currentStats.playersOnline = initialPlayers;
+    
+    // Animer les compteurs initiaux
+    const playersElement = document.getElementById('playersOnline');
+    const downloadsElement = document.getElementById('totalDownloads');
+    const totalPlayersElement = document.getElementById('totalPlayers');
+    
+    if (playersElement) {
+        animateCounter(playersElement, 0, currentStats.playersOnline, 2000);
+    }
+    
+    if (downloadsElement) {
+        animateCounter(downloadsElement, 0, currentStats.totalDownloads, 2500);
+    }
+    
+    if (totalPlayersElement) {
+        animateCounter(totalPlayersElement, 0, currentStats.totalPlayers, 3000);
+    }
+}
+
+// Mettre à jour les joueurs en ligne
+function updatePlayersOnline() {
+    const element = document.getElementById('playersOnline');
+    if (!element) return;
+    
+    const oldValue = currentStats.playersOnline;
+    const variance = STATS_CONFIG.playersOnline.variance;
+    const change = Math.floor(Math.random() * variance * 2) - variance;
+    
+    let newValue = oldValue + change;
+    newValue = Math.max(STATS_CONFIG.playersOnline.min, 
+                       Math.min(STATS_CONFIG.playersOnline.max, newValue));
+    
+    currentStats.playersOnline = newValue;
+    animateCounter(element, oldValue, newValue, 800);
+}
+
+// Mettre à jour les téléchargements
+function updateTotalDownloads() {
+    const element = document.getElementById('totalDownloads');
+    if (!element) return;
+    
+    const oldValue = currentStats.totalDownloads;
+    const increment = Math.floor(Math.random() * 3) + 1; // 1-3 téléchargements
+    const newValue = oldValue + increment;
+    
+    currentStats.totalDownloads = newValue;
+    animateCounter(element, oldValue, newValue, 1000);
+}
+
+// Mettre à jour le total de joueurs
+function updateTotalPlayers() {
+    const element = document.getElementById('totalPlayers');
+    if (!element) return;
+    
+    const oldValue = currentStats.totalPlayers;
+    const increment = Math.floor(Math.random() * 5) + 1; // 1-5 nouveaux joueurs
+    const newValue = oldValue + increment;
+    
+    currentStats.totalPlayers = newValue;
+    animateCounter(element, oldValue, newValue, 1000);
+}
+
+// Démarrer les mises à jour automatiques
+function startStatsUpdates() {
+    // Mettre à jour les joueurs en ligne toutes les 5 secondes
+    setInterval(updatePlayersOnline, STATS_CONFIG.playersOnline.updateInterval);
+    
+    // Mettre à jour les téléchargements toutes les 30 secondes
+    setInterval(updateTotalDownloads, STATS_CONFIG.totalDownloads.updateInterval);
+    
+    // Mettre à jour le total de joueurs toutes les 45 secondes
+    setInterval(updateTotalPlayers, STATS_CONFIG.totalPlayers.updateInterval);
+}
+
+// Initialiser au chargement de la page
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        initializeStats();
+        startStatsUpdates();
+    }, 1000); // Délai de 1 seconde après le chargement
+});
+
+// Sauvegarder les stats dans localStorage pour persistance
+function saveStats() {
+    localStorage.setItem('backroomsStats', JSON.stringify(currentStats));
+}
+
+// Charger les stats depuis localStorage
+function loadStats() {
+    const saved = localStorage.getItem('backroomsStats');
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            // Utiliser les stats sauvegardées mais avec une petite variation
+            currentStats.totalDownloads = parsed.totalDownloads || STATS_CONFIG.totalDownloads.base;
+            currentStats.totalPlayers = parsed.totalPlayers || STATS_CONFIG.totalPlayers.base;
+        } catch (e) {
+            console.log('Erreur chargement stats:', e);
+        }
+    }
+}
+
+// Charger les stats au démarrage
+loadStats();
+
+// Sauvegarder les stats toutes les minutes
+setInterval(saveStats, 60000);
+
+// Sauvegarder avant de quitter la page
+window.addEventListener('beforeunload', saveStats);
+// ========================================
+// DOWNLOAD TRACKING
+// ========================================
+
+// Fonction pour enregistrer un téléchargement
+async function trackDownload(platform = 'windows') {
+    try {
+        // Si l'API est disponible, enregistrer le téléchargement
+        const API_URL = 'http://localhost:3000'; // Changez selon votre configuration
+        
+        const response = await fetch(`${API_URL}/api/download`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ platform })
+        });
+        
+        if (response.ok) {
+            console.log('Téléchargement enregistré avec succès');
+            // Mettre à jour les stats localement
+            currentStats.totalDownloads++;
+            updateStatsDisplay();
+            saveStats();
+        }
+    } catch (error) {
+        console.log('API non disponible, téléchargement non enregistré');
+        // Incrémenter localement même si l'API n'est pas disponible
+        currentStats.totalDownloads++;
+        updateStatsDisplay();
+        saveStats();
+    }
+}
+
+// Ajouter un écouteur d'événement sur le bouton de téléchargement
+document.addEventListener('DOMContentLoaded', () => {
+    const downloadButton = document.querySelector('.btn-download');
+    if (downloadButton) {
+        downloadButton.addEventListener('click', (e) => {
+            // Ne pas empêcher le téléchargement
+            trackDownload('windows');
+            
+            // Afficher un message de remerciement
+            const originalText = downloadButton.innerHTML;
+            downloadButton.innerHTML = '<span class="btn-icon">✓</span> Merci pour le téléchargement !';
+            downloadButton.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+            
+            setTimeout(() => {
+                downloadButton.innerHTML = originalText;
+                downloadButton.style.background = '';
+            }, 3000);
+        });
+    }
+});
+
+
+// ========================================
 // NAVIGATION
 // ========================================
 
