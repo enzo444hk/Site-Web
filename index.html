@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Backrooms - Un jeu d'horreur psychologique développé sur Unreal Engine 5.4">
+    <title>Backrooms - Jeu d'Horreur UE5.4</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">BACKROOMS</div>
+            <ul class="nav-menu">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#apropos">À Propos</a></li>
+                <li><a href="#caracteristiques">Caractéristiques</a></li>
+                <li><a href="#galerie">Galerie</a></li>
+                <li><a href="#telecharger">Télécharger</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="accueil" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="glitch" data-text="BACKROOMS">BACKROOMS</h1>
+            <p class="hero-subtitle">Si tu n'es pas prudent et que tu sors de la réalité dans les mauvais endroits...</p>
+            <p class="hero-subtitle">Tu finiras dans les Backrooms.</p>
+            
+            <!-- Live Stats -->
+            <div class="live-stats">
+                <div class="stat-live">
+                    <div class="stat-live-icon">🎮</div>
+                    <div class="stat-live-number" id="playersOnline">0</div>
+                    <div class="stat-live-label">Joueurs en ligne</div>
+                    <div class="stat-live-pulse"></div>
+                </div>
+                <div class="stat-live">
+                    <div class="stat-live-icon">⬇️</div>
+                    <div class="stat-live-number" id="totalDownloads">0</div>
+                    <div class="stat-live-label">Téléchargements</div>
+                </div>
+                <div class="stat-live">
+                    <div class="stat-live-icon">👥</div>
+                    <div class="stat-live-number" id="totalPlayers">0</div>
+                    <div class="stat-live-label">Joueurs totaux</div>
+                </div>
+            </div>
+            
+            <a href="#telecharger" class="btn-primary">Jouer Maintenant</a>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="arrow-down"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="apropos" class="about">
+        <div class="container">
+            <h2 class="section-title">À Propos du Jeu</h2>
+            
+            <!-- Badges Section -->
+            <div class="badges-container">
+                <span class="badge">🎮 Multijoueur</span>
+                <span class="badge">🎤 Chat Vocal</span>
+                <span class="badge">👹 IA Avancée</span>
+                <span class="badge">💡 UE 5.4</span>
+                <span class="badge">😱 Horreur</span>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="text-highlight">
+                        <span class="highlight-icon">🚪</span>
+                        <p>Bienvenue dans les <strong>Backrooms</strong>, un jeu d'horreur psychologique multijoueur développé sur Unreal Engine 5.4 qui vous plonge dans un labyrinthe infini de salles monotones et inquiétantes.</p>
+                    </div>
+                    
+                    <div class="text-highlight">
+                        <span class="highlight-icon">🗺️</span>
+                        <p>Explorez de <strong>nombreux niveaux</strong> avec plusieurs sorties possibles, échappez aux <strong>différents types de monstres</strong> qui réagissent à vos actions, et survivez avec vos amis grâce au <strong>multijoueur Steam Advanced Session</strong>.</p>
+                    </div>
+                    
+                    <div class="text-highlight danger">
+                        <span class="highlight-icon">⚠️</span>
+                        <p>Attention : votre voix peut vous trahir ! Le <strong>chat de proximité</strong> permet aux monstres d'entendre vos conversations. Osez-vous insulter les créatures ? Elles vous poursuivront sans relâche...</p>
+                    </div>
+                    
+                    <div class="text-highlight">
+                        <span class="highlight-icon">💡</span>
+                        <p>Avec des graphismes photoréalistes grâce à Lumen et Nanite, un <strong>menu 3D immersif</strong> et des <strong>screamers</strong> terrifiants, chaque coin sombre cache un danger mortel.</p>
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <div class="stat-icon">🏢</div>
+                        <h3>∞</h3>
+                        <p>Niveaux Procéduraux</p>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">⚡</div>
+                        <h3>UE 5.4</h3>
+                        <p>Unreal Engine</p>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">😱</div>
+                        <h3>100%</h3>
+                        <p>Terreur Pure</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="caracteristiques" class="features">
+        <div class="container">
+            <h2 class="section-title">Caractéristiques</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3>Chat de Proximité</h3>
+                    <p>Communiquez avec vos coéquipiers, mais attention : les monstres entendent tout ce que vous dites !</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👹</div>
+                    <h3>IA Réactive</h3>
+                    <p>Insultez les monstres et ils vous poursuivront avec rage. Chaque créature réagit différemment à vos provocations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Multijoueur Steam</h3>
+                    <p>Jouez avec vos amis via Steam Advanced Session. Survivez ensemble ou mourez seul.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>Nombreux Niveaux</h3>
+                    <p>Explorez de multiples niveaux des Backrooms, chacun avec plusieurs sorties possibles.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">😱</div>
+                    <h3>Screamers Terrifiants</h3>
+                    <p>Des jump scares imprévisibles qui vous feront sursauter à chaque instant.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Menu 3D Immersif</h3>
+                    <p>Interface de menu entièrement en 3D pour une immersion dès le lancement du jeu.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👻</div>
+                    <h3>Monstres Variés</h3>
+                    <p>Affrontez différents types de créatures, chacune avec ses propres comportements et faiblesses.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Graphismes UE5.4</h3>
+                    <p>Propulsé par Lumen et Nanite pour des graphismes photoréalistes et une atmosphère oppressante.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="galerie" class="gallery">
+        <div class="container">
+            <h2 class="section-title">Galerie</h2>
+            
+            <!-- Video Section -->
+            <div class="video-container">
+                <h3 class="video-title">🎬 Bande-Annonce du Jeu</h3>
+                <div class="video-wrapper">
+                    <video controls poster="images/screenshot1.jpg">
+                        <source src="images/Video.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture de vidéos.
+                    </video>
+                </div>
+            </div>
+
+            <!-- Screenshots Grid -->
+            <h3 class="screenshots-title">📸 Captures d'Écran</h3>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="images/screenshot1.jpg" alt="Gameplay Backrooms">
+                    <div class="gallery-overlay">
+                        <p>Exploration des Backrooms</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/screenshot2.jpg" alt="Gameplay Backrooms 2">
+                    <div class="gallery-overlay">
+                        <p>Atmosphère Inquiétante</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/video-frame-1.jpg" alt="Extrait vidéo 1">
+                    <div class="gallery-overlay">
+                        <p>Extrait de la Bande-Annonce</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/video-frame-2.jpg" alt="Extrait vidéo 2">
+                    <div class="gallery-overlay">
+                        <p>Moment Intense du Jeu</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="telecharger" class="download">
+        <div class="container">
+            <h2 class="section-title">Télécharger le Jeu</h2>
+            <div class="download-content">
+                <div class="download-info">
+                    <h3>Configuration Requise</h3>
+                    <div class="requirements">
+                        <div class="req-column">
+                            <h4>Minimum</h4>
+                            <ul>
+                                <li><strong>OS:</strong> Windows 10 64-bit</li>
+                                <li><strong>Processeur:</strong> Intel Core i5-4570</li>
+                                <li><strong>Mémoire:</strong> 8 GB RAM</li>
+                                <li><strong>Graphiques:</strong> NVIDIA GTX 1050</li>
+                                <li><strong>DirectX:</strong> Version 12</li>
+                                <li><strong>Stockage:</strong> 50 GB disponible</li>
+                                <li><strong>Réseau:</strong> Connexion Internet (multijoueur)</li>
+                            </ul>
+                        </div>
+                        <div class="req-column">
+                            <h4>Recommandé</h4>
+                            <ul>
+                                <li><strong>OS:</strong> Windows 10/11 64-bit</li>
+                                <li><strong>Processeur:</strong> Intel Core i7-7700</li>
+                                <li><strong>Mémoire:</strong> 16 GB RAM</li>
+                                <li><strong>Graphiques:</strong> NVIDIA GTX 1080</li>
+                                <li><strong>DirectX:</strong> Version 12</li>
+                                <li><strong>Stockage:</strong> 50 GB SSD</li>
+                                <li><strong>Réseau:</strong> Connexion Internet haut débit</li>
+                                <li><strong>Autre:</strong> Microphone pour chat vocal</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="download-buttons">
+                    <a href="https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw" class="btn-download" target="_blank" rel="noopener noreferrer">
+                        <span class="btn-icon">💻</span>
+                        Télécharger pour Windows
+                    </a>
+                    <a href="https://drive.google.com/file/d/1aJg5eO8HJxBKFqGlL9GMPItIoe7nLZyS/view?usp=drivesdk" class="btn-download" target="_blank" rel="noopener noreferrer">
+                        <span class="btn-icon">📱</span>
+                        Télécharger pour Android
+                    </a>
+                    <div class="platform-links">
+                        <a href="https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw" class="platform-link" target="_blank" rel="noopener noreferrer">MEGA</a>
+                        <a href="https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw" class="platform-link" target="_blank" rel="noopener noreferrer">Téléchargement Direct</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BACKROOMS</h3>
+                    <p>Un jeu d'horreur développé sur Unreal Engine 5.4</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Liens Rapides</h4>
+                    <ul>
+                        <li><a href="#accueil">Accueil</a></li>
+                        <li><a href="#apropos">À Propos</a></li>
+                        <li><a href="#caracteristiques">Caractéristiques</a></li>
+                        <li><a href="#galerie">Galerie</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Communauté</h4>
+                    <ul>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">YouTube</a></li>
+                        <li><a href="#">Reddit</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Signaler un Bug</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Backrooms Game. Tous droits réservés. Développé avec Unreal Engine 5.4</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
