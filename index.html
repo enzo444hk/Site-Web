@@ -7,6 +7,27 @@
     <title>Backrooms - Jeu d'Horreur UE5.4</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* Défilement fluide global */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Fix pour que l'indicateur Scroll soit cliquable */
+        a.scroll-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        a.scroll-indicator:hover {
+            transform: translateY(5px);
+            opacity: 0.8;
+        }
+
         /* Adaptations CSS dynamiques */
         .device-badge {
             display: inline-flex;
@@ -20,11 +41,13 @@
             margin-bottom: 15px;
             backdrop-filter: blur(5px);
         }
+
         .btn-download.recommended {
             border: 2px solid #00ff88;
             box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
             position: relative;
         }
+
         .btn-download.recommended::before {
             content: "RECOMMANDÉ POUR VOTRE APPAREIL";
             position: absolute;
@@ -37,6 +60,15 @@
             padding: 2px 8px;
             border-radius: 4px;
             letter-spacing: 0.5px;
+        }
+
+        /* Enlever l'effet de contour persistant sur les clics */
+        .btn-primary:focus,
+        .btn-download:focus,
+        .platform-link:focus,
+        a:focus,
+        button:focus {
+            outline: none;
         }
     </style>
 </head>
@@ -98,10 +130,12 @@
             
             <a href="#telecharger" class="btn-primary" id="heroDownloadBtn">Jouer Maintenant</a>
         </div>
-        <div class="scroll-indicator">
+        
+        <!-- CORRECTION 1 : Rendu cliquable vers la section #telecharger -->
+        <a href="#telecharger" class="scroll-indicator" id="scrollIndicatorBtn">
             <span>Scroll</span>
             <div class="arrow-down"></div>
-        </div>
+        </a>
     </section>
 
     <!-- About Section -->
@@ -347,9 +381,10 @@
         </div>
     </footer>
 
-    <!-- Script de Détection et d'Adaptation Automatique -->
+    <!-- Script de Détection + Correctifs -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 1. DÉTECTION APPAREIL
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
             const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
             
@@ -372,6 +407,28 @@
                     heroBtn.setAttribute('href', '#telecharger');
                     heroBtn.innerHTML = '💻 Télécharger pour Windows';
                 }
+            }
+
+            // CORRECTION 2 : Libérer le focus des boutons immédiatement après le clic
+            const allInteractives = document.querySelectorAll('a, button, .btn-primary, .btn-download, .platform-link');
+            allInteractives.forEach(el => {
+                el.addEventListener('click', function() {
+                    setTimeout(() => {
+                        this.blur(); // Remet le bouton à son état normal
+                    }, 100);
+                });
+            });
+
+            // CORRECTION 3 : Scroll fluide au clic sur l'indicateur Scroll
+            const scrollIndicator = document.getElementById('scrollIndicatorBtn');
+            if (scrollIndicator) {
+                scrollIndicator.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetSection = document.getElementById('telecharger');
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
             }
         });
     </script>
