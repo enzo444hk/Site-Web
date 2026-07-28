@@ -6,6 +6,39 @@
     <meta name="description" content="Backrooms - Un jeu d'horreur psychologique développé sur Unreal Engine 5.4">
     <title>Backrooms - Jeu d'Horreur UE5.4</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Adaptations CSS dynamiques */
+        .device-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            backdrop-filter: blur(5px);
+        }
+        .btn-download.recommended {
+            border: 2px solid #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            position: relative;
+        }
+        .btn-download.recommended::before {
+            content: "RECOMMANDÉ POUR VOTRE APPAREIL";
+            position: absolute;
+            top: -12px;
+            right: 15px;
+            background: #00ff88;
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+    </style>
 </head>
 <body>
     <!-- Scroll Progress Bar -->
@@ -34,6 +67,11 @@
     <section id="accueil" class="hero">
         <div class="hero-overlay"></div>
         <div class="hero-content">
+            <!-- Détection d'appareil affichée -->
+            <div class="device-badge" id="detectedDeviceBadge">
+                🔍 Détection de votre appareil...
+            </div>
+
             <h1 class="glitch" data-text="BACKROOMS">BACKROOMS</h1>
             <p class="hero-subtitle">Si tu n'es pas prudent et que tu sors de la réalité dans les mauvais endroits...</p>
             <p class="hero-subtitle">Tu finiras dans les Backrooms.</p>
@@ -58,7 +96,7 @@
                 </div>
             </div>
             
-            <a href="#telecharger" class="btn-primary">Jouer Maintenant</a>
+            <a href="#telecharger" class="btn-primary" id="heroDownloadBtn">Jouer Maintenant</a>
         </div>
         <div class="scroll-indicator">
             <span>Scroll</span>
@@ -228,44 +266,40 @@
                     <h3>Configuration Requise</h3>
                     <div class="requirements">
                         <div class="req-column">
-                            <h4>Minimum</h4>
+                            <h4>PC (Windows)</h4>
                             <ul>
-                                <li><strong>OS:</strong> Windows 10 64-bit</li>
-                                <li><strong>Processeur:</strong> Intel Core i5-4570</li>
-                                <li><strong>Mémoire:</strong> 8 GB RAM</li>
-                                <li><strong>Graphiques:</strong> NVIDIA GTX 1050</li>
+                                <li><strong>OS:</strong> Windows 10/11 64-bit</li>
+                                <li><strong>Processeur:</strong> Intel Core i5 / i7</li>
+                                <li><strong>Mémoire:</strong> 8 - 16 GB RAM</li>
+                                <li><strong>Graphiques:</strong> GTX 1050 / GTX 1080</li>
                                 <li><strong>DirectX:</strong> Version 12</li>
-                                <li><strong>Stockage:</strong> 50 GB disponible</li>
-                                <li><strong>Réseau:</strong> Connexion Internet (multijoueur)</li>
+                                <li><strong>Stockage:</strong> 50 GB SSD</li>
                             </ul>
                         </div>
                         <div class="req-column">
-                            <h4>Recommandé</h4>
+                            <h4>Mobile (Android)</h4>
                             <ul>
-                                <li><strong>OS:</strong> Windows 10/11 64-bit</li>
-                                <li><strong>Processeur:</strong> Intel Core i7-7700</li>
-                                <li><strong>Mémoire:</strong> 16 GB RAM</li>
-                                <li><strong>Graphiques:</strong> NVIDIA GTX 1080</li>
-                                <li><strong>DirectX:</strong> Version 12</li>
-                                <li><strong>Stockage:</strong> 50 GB SSD</li>
-                                <li><strong>Réseau:</strong> Connexion Internet haut débit</li>
-                                <li><strong>Autre:</strong> Microphone pour chat vocal</li>
+                                <li><strong>OS:</strong> Android 10.0 ou supérieur</li>
+                                <li><strong>Processeur:</strong> Snapdragon 730G / Exynos 9810+</li>
+                                <li><strong>Mémoire:</strong> 4 GB RAM minimum</li>
+                                <li><strong>Stockage:</strong> 4 GB d'espace libre</li>
+                                <li><strong>Autre:</strong> Support Vulkan 1.1+</li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="download-buttons">
-                    <a href="https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw" class="btn-download" target="_blank" rel="noopener noreferrer">
+                    <a href="https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw" class="btn-download" id="btnWin" target="_blank" rel="noopener noreferrer">
                         <span class="btn-icon">💻</span>
                         Télécharger pour Windows
                     </a>
-                    <a href="https://drive.google.com/file/d/1aJg5eO8HJxBKFqGlL9GMPItIoe7nLZyS/view?usp=drivesdk" class="btn-download" target="_blank" rel="noopener noreferrer">
+                    <a href="https://drive.google.com/file/d/1aJg5eO8HJxBKFqGlL9GMPItIoe7nLZyS/view?usp=drivesdk" class="btn-download" id="btnAndroid" target="_blank" rel="noopener noreferrer">
                         <span class="btn-icon">📱</span>
                         Télécharger pour Android
                     </a>
                     <div class="platform-links">
                         <a href="https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw" class="platform-link" target="_blank" rel="noopener noreferrer">MEGA</a>
-                        <a href="https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw" class="platform-link" target="_blank" rel="noopener noreferrer">Téléchargement Direct</a>
+                        <a href="https://drive.google.com/file/d/1aJg5eO8HJxBKFqGlL9GMPItIoe7nLZyS/view?usp=drivesdk" class="platform-link" target="_blank" rel="noopener noreferrer">Google Drive (APK)</a>
                     </div>
                 </div>
             </div>
@@ -313,6 +347,34 @@
         </div>
     </footer>
 
+    <!-- Script de Détection et d'Adaptation Automatique -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+            
+            const badge = document.getElementById('detectedDeviceBadge');
+            const btnWin = document.getElementById('btnWin');
+            const btnAndroid = document.getElementById('btnAndroid');
+            const heroBtn = document.getElementById('heroDownloadBtn');
+
+            if (isMobile) {
+                if (badge) badge.innerHTML = '📱 Appareil détecté : <strong>Mobile / Tablette</strong>';
+                if (btnAndroid) btnAndroid.classList.add('recommended');
+                if (heroBtn) {
+                    heroBtn.setAttribute('href', 'https://drive.google.com/file/d/1aJg5eO8HJxBKFqGlL9GMPItIoe7nLZyS/view?usp=drivesdk');
+                    heroBtn.innerHTML = '📱 Télécharger l\'APK Android';
+                }
+            } else {
+                if (badge) badge.innerHTML = '💻 Appareil détecté : <strong>PC / Ordinateur</strong>';
+                if (btnWin) btnWin.classList.add('recommended');
+                if (heroBtn) {
+                    heroBtn.setAttribute('href', '#telecharger');
+                    heroBtn.innerHTML = '💻 Télécharger pour Windows';
+                }
+            }
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
