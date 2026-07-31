@@ -174,23 +174,19 @@ window.addEventListener('load', () => {
 });
 
 // ========================================
-// DOWNLOAD TRACKING & BUTTONS
+// DOWNLOAD TRACKING & BUTTONS (CORRIGÉ)
 // ========================================
 
 async function trackDownload(platform = 'windows') {
     try {
         const API_URL = 'http://localhost:3000';
-        const response = await fetch(`${API_URL}/api/download`, {
+        await fetch(`${API_URL}/api/download`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ platform })
         });
-        
-        if (response.ok) {
-            console.log('Téléchargement enregistré avec succès');
-        }
     } catch (error) {
-        console.log('API non disponible, sauvegarde locale appliquée');
+        // Mode hors-ligne / fallback local
     } finally {
         currentStats.totalDownloads++;
         updateStatsDisplay();
@@ -198,20 +194,21 @@ async function trackDownload(platform = 'windows') {
     }
 }
 
-// Notification visuelle de téléchargement
+// Notification visuelle de lancement de téléchargement
 function showDownloadNotification() {
     const notification = document.createElement('div');
-    notification.textContent = 'Téléchargement bientôt disponible !';
+    notification.textContent = '🚀 Redirection vers le téléchargement...';
     notification.style.cssText = `
         position: fixed;
         top: 100px;
         right: 20px;
-        background: var(--primary-color);
-        color: var(--text-dark);
+        background: #00ff88;
+        color: #000000;
         padding: 1rem 2rem;
         border-radius: 5px;
         font-weight: bold;
         z-index: 10000;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
         animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s;
     `;
     
@@ -224,18 +221,18 @@ document.addEventListener('DOMContentLoaded', () => {
     
     downloadButtons.forEach(button => {
         button.addEventListener('click', (e) => {
-            e.preventDefault();
-            trackDownload('windows');
+            // REMARQUE : e.preventDefault() a été retiré pour que les liens MEGA/Drive s'ouvrent normalement !
+            
+            const platform = button.id === 'btnAndroid' ? 'android' : 'windows';
+            trackDownload(platform);
             showDownloadNotification();
             
             if (button.classList.contains('btn-download')) {
                 const originalText = button.innerHTML;
-                button.innerHTML = '<span class="btn-icon">✓</span> Merci pour le téléchargement !';
-                button.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+                button.innerHTML = '<span class="btn-icon">✓</span> Téléchargement en cours...';
                 
                 setTimeout(() => {
                     button.innerHTML = originalText;
-                    button.style.background = '';
                 }, 3000);
             }
         });
