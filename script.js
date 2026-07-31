@@ -1,7 +1,7 @@
 // ========================================
 // CONFIGURATION ET LIENS
 // ========================================
-const ANDROID_URL = "https://mega.nz/file/4Btm0ADB#Bmo07TyeQZlqXvjFgeUNmq1z7EuKTsYSsPc1vf7GCxI";
+const ANDROID_URL = "https://jottacloud.com/s/4948003f34aaf9d458c894a95db48a6e5ca";
 const WINDOWS_URL = "https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw";
 
 // ========================================
