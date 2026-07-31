@@ -131,7 +131,7 @@
             <a href="#telecharger" class="btn-primary" id="heroDownloadBtn">Jouer Maintenant</a>
         </div>
         
-        <!-- CORRECTION 1 : Rendu cliquable vers la section #telecharger -->
+        <!-- Indicateur Scroll cliquable vers la section #telecharger -->
         <a href="#telecharger" class="scroll-indicator" id="scrollIndicatorBtn">
             <span>Scroll</span>
             <div class="arrow-down"></div>
@@ -303,7 +303,7 @@
                             <h4>PC (Windows)</h4>
                             <ul>
                                 <li><strong>OS:</strong> Windows 10/11 64-bit</li>
-                                <li><strong>Processeur:</strong> Intel Core i3 / i5 old gen </li>
+                                <li><strong>Processeur:</strong> Intel Core i3 / i5 old gen</li>
                                 <li><strong>Mémoire:</strong> 8 - 10 GB RAM</li>
                                 <li><strong>Graphiques:</strong> GTX 950 / GTX 960</li>
                                 <li><strong>DirectX:</strong> Version 12</li>
@@ -323,17 +323,19 @@
                     </div>
                 </div>
                 <div class="download-buttons">
+                    <!-- LIEN WINDOWS (MEGA) -->
                     <a href="https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw" class="btn-download" id="btnWin" target="_blank" rel="noopener noreferrer">
                         <span class="btn-icon">💻</span>
                         Télécharger pour Windows
                     </a>
-                    <a href="https://mega.nz/file/4Btm0ADB#Bmo07TyeQZlqXvjFgeUNmq1z7EuKTsYSsPc1vf7GCxI" class="btn-download" id="btnAndroid" target="_blank" rel="noopener noreferrer">
+                    <!-- LIEN ANDROID (GOOGLE DRIVE) -->
+                    <a href="https://drive.google.com/file/d/1aJg5eO8HJxBKFqGlL9GMPItIoe7nLZyS/view?usp=drivesdk" class="btn-download" id="btnAndroid" target="_blank" rel="noopener noreferrer">
                         <span class="btn-icon">📱</span>
-                        Télécharger pour Android
+                        Télécharger pour Android (APK)
                     </a>
                     <div class="platform-links">
-                        <a href="https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw" class="platform-link" target="_blank" rel="noopener noreferrer">MEGA</a>
-                        <a href="https://mega.nz/file/4Btm0ADB#Bmo07TyeQZlqXvjFgeUNmq1z7EuKTsYSsPc1vf7GCxI" class="platform-link" target="_blank" rel="noopener noreferrer">Google Drive (APK)</a>
+                        <a href="https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw" class="platform-link" target="_blank" rel="noopener noreferrer">MEGA (PC)</a>
+                        <a href="https://drive.google.com/file/d/1aJg5eO8HJxBKFqGlL9GMPItIoe7nLZyS/view?usp=drivesdk" class="platform-link" target="_blank" rel="noopener noreferrer">Google Drive (APK)</a>
                     </div>
                 </div>
             </div>
@@ -393,11 +395,15 @@
             const btnAndroid = document.getElementById('btnAndroid');
             const heroBtn = document.getElementById('heroDownloadBtn');
 
+            const androidUrl = "https://drive.google.com/file/d/1aJg5eO8HJxBKFqGlL9GMPItIoe7nLZyS/view?usp=drivesdk";
+
             if (isMobile) {
                 if (badge) badge.innerHTML = '📱 Appareil détecté : <strong>Mobile / Tablette</strong>';
                 if (btnAndroid) btnAndroid.classList.add('recommended');
                 if (heroBtn) {
-                    heroBtn.setAttribute('href', 'https://drive.google.com/file/d/1aJg5eO8HJxBKFqGlL9GMPItIoe7nLZyS/view?usp=drivesdk');
+                    heroBtn.setAttribute('href', androidUrl);
+                    heroBtn.setAttribute('target', '_blank');
+                    heroBtn.setAttribute('rel', 'noopener noreferrer');
                     heroBtn.innerHTML = '📱 Télécharger l\'APK Android';
                 }
             } else {
@@ -409,17 +415,17 @@
                 }
             }
 
-            // CORRECTION 2 : Libérer le focus des boutons immédiatement après le clic
+            // 2. Libérer le focus des boutons immédiatement après le clic
             const allInteractives = document.querySelectorAll('a, button, .btn-primary, .btn-download, .platform-link');
             allInteractives.forEach(el => {
                 el.addEventListener('click', function() {
                     setTimeout(() => {
-                        this.blur(); // Remet le bouton à son état normal
+                        this.blur();
                     }, 100);
                 });
             });
 
-            // CORRECTION 3 : Scroll fluide au clic sur l'indicateur Scroll
+            // 3. Scroll fluide au clic sur l'indicateur Scroll
             const scrollIndicator = document.getElementById('scrollIndicatorBtn');
             if (scrollIndicator) {
                 scrollIndicator.addEventListener('click', function(e) {
