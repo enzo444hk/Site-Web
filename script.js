@@ -1,35 +1,38 @@
 // ========================================
+// CONFIGURATION ET LIENS
+// ========================================
+const ANDROID_URL = "https://mega.nz/file/4Btm0ADB#Bmo07TyeQZlqXvjFgeUNmq1z7EuKTsYSsPc1vf7GCxI";
+const WINDOWS_URL = "https://mega.nz/folder/BJMTwBaD#_InqSo-J5npFDkTUr8r1bw";
+
+// ========================================
 // LIVE STATISTICS SYSTEM
 // ========================================
 
-// Configuration des statistiques
 const STATS_CONFIG = {
     playersOnline: {
         min: 15,
         max: 250,
-        updateInterval: 5000, // 5 secondes
+        updateInterval: 5000,
         variance: 10
     },
     totalDownloads: {
         base: 12847,
         increment: 1,
-        updateInterval: 30000 // 30 secondes
+        updateInterval: 30000
     },
     totalPlayers: {
         base: 45623,
         increment: 2,
-        updateInterval: 45000 // 45 secondes
+        updateInterval: 45000
     }
 };
 
-// Variables globales pour les stats
 let currentStats = {
     playersOnline: 0,
     totalDownloads: STATS_CONFIG.totalDownloads.base,
     totalPlayers: STATS_CONFIG.totalPlayers.base
 };
 
-// Fonction pour animer un compteur
 function animateCounter(element, start, end, duration = 1000) {
     if (!element) return;
     
@@ -50,12 +53,10 @@ function animateCounter(element, start, end, duration = 1000) {
     }, 16);
 }
 
-// Fonction pour formater les nombres
 function formatNumber(num) {
     return num.toLocaleString('fr-FR');
 }
 
-// Mettre à jour l'affichage dynamique
 function updateStatsDisplay() {
     const downloadsElem = document.getElementById('totalDownloads');
     if (downloadsElem) downloadsElem.textContent = formatNumber(currentStats.totalDownloads);
@@ -67,7 +68,6 @@ function updateStatsDisplay() {
     if (onlineElem) onlineElem.textContent = formatNumber(currentStats.playersOnline);
 }
 
-// Initialiser les statistiques
 function initializeStats() {
     const initialPlayers = Math.floor(
         Math.random() * (STATS_CONFIG.playersOnline.max - STATS_CONFIG.playersOnline.min) + 
@@ -79,20 +79,11 @@ function initializeStats() {
     const downloadsElement = document.getElementById('totalDownloads');
     const totalPlayersElement = document.getElementById('totalPlayers');
     
-    if (playersElement) {
-        animateCounter(playersElement, 0, currentStats.playersOnline, 2000);
-    }
-    
-    if (downloadsElement) {
-        animateCounter(downloadsElement, 0, currentStats.totalDownloads, 2500);
-    }
-    
-    if (totalPlayersElement) {
-        animateCounter(totalPlayersElement, 0, currentStats.totalPlayers, 3000);
-    }
+    if (playersElement) animateCounter(playersElement, 0, currentStats.playersOnline, 2000);
+    if (downloadsElement) animateCounter(downloadsElement, 0, currentStats.totalDownloads, 2500);
+    if (totalPlayersElement) animateCounter(totalPlayersElement, 0, currentStats.totalPlayers, 3000);
 }
 
-// Mettre à jour les joueurs en ligne
 function updatePlayersOnline() {
     const element = document.getElementById('playersOnline');
     if (!element) return;
@@ -101,53 +92,45 @@ function updatePlayersOnline() {
     const variance = STATS_CONFIG.playersOnline.variance;
     const change = Math.floor(Math.random() * variance * 2) - variance;
     
-    let newValue = oldValue + change;
-    newValue = Math.max(STATS_CONFIG.playersOnline.min, 
-                       Math.min(STATS_CONFIG.playersOnline.max, newValue));
+    let newValue = Math.max(STATS_CONFIG.playersOnline.min, 
+                           Math.min(STATS_CONFIG.playersOnline.max, oldValue + change));
     
     currentStats.playersOnline = newValue;
     animateCounter(element, oldValue, newValue, 800);
 }
 
-// Mettre à jour les téléchargements
 function updateTotalDownloads() {
     const element = document.getElementById('totalDownloads');
     if (!element) return;
     
     const oldValue = currentStats.totalDownloads;
-    const increment = Math.floor(Math.random() * 3) + 1;
-    const newValue = oldValue + increment;
+    const newValue = oldValue + Math.floor(Math.random() * 3) + 1;
     
     currentStats.totalDownloads = newValue;
     animateCounter(element, oldValue, newValue, 1000);
 }
 
-// Mettre à jour le total de joueurs
 function updateTotalPlayers() {
     const element = document.getElementById('totalPlayers');
     if (!element) return;
     
     const oldValue = currentStats.totalPlayers;
-    const increment = Math.floor(Math.random() * 5) + 1;
-    const newValue = oldValue + increment;
+    const newValue = oldValue + Math.floor(Math.random() * 5) + 1;
     
     currentStats.totalPlayers = newValue;
     animateCounter(element, oldValue, newValue, 1000);
 }
 
-// Démarrer les mises à jour automatiques
 function startStatsUpdates() {
     setInterval(updatePlayersOnline, STATS_CONFIG.playersOnline.updateInterval);
     setInterval(updateTotalDownloads, STATS_CONFIG.totalDownloads.updateInterval);
     setInterval(updateTotalPlayers, STATS_CONFIG.totalPlayers.updateInterval);
 }
 
-// Sauvegarder les stats dans localStorage
 function saveStats() {
     localStorage.setItem('backroomsStats', JSON.stringify(currentStats));
 }
 
-// Charger les stats depuis localStorage
 function loadStats() {
     const saved = localStorage.getItem('backroomsStats');
     if (saved) {
@@ -161,7 +144,6 @@ function loadStats() {
     }
 }
 
-// Chargement initial des stats
 loadStats();
 setInterval(saveStats, 60000);
 window.addEventListener('beforeunload', saveStats);
@@ -174,7 +156,45 @@ window.addEventListener('load', () => {
 });
 
 // ========================================
-// DOWNLOAD TRACKING & BUTTONS (CORRIGÉ)
+// DEVICE DETECTION & DYNAMIC LINKS
+// ========================================
+
+function setupDeviceDetection() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+    
+    const badge = document.getElementById('detectedDeviceBadge');
+    const btnWin = document.getElementById('btnWin');
+    const btnAndroid = document.getElementById('btnAndroid');
+    const heroBtn = document.getElementById('heroDownloadBtn');
+
+    if (isMobile) {
+        if (badge) badge.innerHTML = '📱 Appareil détecté : <strong>Mobile / Tablette</strong>';
+        if (btnAndroid) {
+            btnAndroid.classList.add('recommended');
+            btnAndroid.href = ANDROID_URL;
+        }
+        if (heroBtn) {
+            heroBtn.setAttribute('href', ANDROID_URL);
+            heroBtn.setAttribute('target', '_blank');
+            heroBtn.setAttribute('rel', 'noopener noreferrer');
+            heroBtn.innerHTML = '📱 Télécharger l\'APK Android';
+        }
+    } else {
+        if (badge) badge.innerHTML = '💻 Appareil détecté : <strong>PC / Ordinateur</strong>';
+        if (btnWin) {
+            btnWin.classList.add('recommended');
+            btnWin.href = WINDOWS_URL;
+        }
+        if (heroBtn) {
+            heroBtn.setAttribute('href', '#telecharger');
+            heroBtn.innerHTML = '💻 Télécharger pour Windows';
+        }
+    }
+}
+
+// ========================================
+// DOWNLOAD TRACKING & NOTIFICATIONS
 // ========================================
 
 async function trackDownload(platform = 'windows') {
@@ -186,7 +206,7 @@ async function trackDownload(platform = 'windows') {
             body: JSON.stringify({ platform })
         });
     } catch (error) {
-        // Mode hors-ligne / fallback local
+        // Mode hors-ligne / sauvegarde locale
     } finally {
         currentStats.totalDownloads++;
         updateStatsDisplay();
@@ -194,7 +214,6 @@ async function trackDownload(platform = 'windows') {
     }
 }
 
-// Notification visuelle de lancement de téléchargement
 function showDownloadNotification() {
     const notification = document.createElement('div');
     notification.textContent = '🚀 Redirection vers le téléchargement...';
@@ -217,26 +236,42 @@ function showDownloadNotification() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialiser la détection d'appareil
+    setupDeviceDetection();
+
+    // Gestion des boutons de téléchargement
     const downloadButtons = document.querySelectorAll('.btn-download, .platform-link');
     
     downloadButtons.forEach(button => {
         button.addEventListener('click', (e) => {
-            // REMARQUE : e.preventDefault() a été retiré pour que les liens MEGA/Drive s'ouvrent normalement !
-            
-            const platform = button.id === 'btnAndroid' ? 'android' : 'windows';
+            // Note: On ne met PAS e.preventDefault() pour laisser le lien MEGA s'ouvrir
+            const platform = (button.id === 'btnAndroid' || button.href.includes('file')) ? 'android' : 'windows';
             trackDownload(platform);
             showDownloadNotification();
             
             if (button.classList.contains('btn-download')) {
                 const originalText = button.innerHTML;
-                button.innerHTML = '<span class="btn-icon">✓</span> Téléchargement en cours...';
+                button.innerHTML = '<span class="btn-icon">✓</span> Redirection...';
                 
                 setTimeout(() => {
                     button.innerHTML = originalText;
+                    button.blur();
                 }, 3000);
             }
         });
     });
+
+    // Fix Scroll Indicator
+    const scrollIndicator = document.getElementById('scrollIndicatorBtn');
+    if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetSection = document.getElementById('telecharger');
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
 });
 
 // ========================================
@@ -261,9 +296,10 @@ navLinks.forEach(link => {
     });
 });
 
-// Smooth Scroll
+// Smooth Scroll pour la navigation
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        if (this.getAttribute('href') === '#') return;
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
@@ -275,12 +311,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar background & Active Link Highlight
+// Navbar Scroll Effect & Active Links
 const sections = document.querySelectorAll('section[id]');
 const navbar = document.querySelector('.navbar');
 
 window.addEventListener('scroll', () => {
-    // Barre de défilement
     const scrollProgress = document.getElementById('scrollProgress');
     if (scrollProgress) {
         const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -288,7 +323,6 @@ window.addEventListener('scroll', () => {
         scrollProgress.style.width = scrolled + '%';
     }
 
-    // Effet Navbar
     if (navbar) {
         if (window.scrollY > 100) {
             navbar.style.background = 'rgba(10, 10, 10, 0.98)';
@@ -299,7 +333,6 @@ window.addEventListener('scroll', () => {
         }
     }
 
-    // Liens actifs
     const scrollY = window.pageYOffset;
     sections.forEach(section => {
         const sectionHeight = section.offsetHeight;
@@ -318,7 +351,7 @@ window.addEventListener('scroll', () => {
 });
 
 // ========================================
-// INTERSECTION OBSERVER & REVEAL ANIMATIONS
+// INTERSECTION OBSERVER & ANIMATIONS
 // ========================================
 
 const observerOptions = {
@@ -346,31 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
     
-    document.querySelectorAll('.section-title').forEach(title => {
-        observer.observe(title);
-    });
-});
-
-// Observer pour animer les blocs de statistiques statiques
-const statObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
-            entry.target.classList.add('counted');
-            const h3 = entry.target.querySelector('h3');
-            if (h3) {
-                const text = h3.textContent.trim();
-                if (!isNaN(text) && text !== '∞') {
-                    const target = parseInt(text);
-                    h3.textContent = '0';
-                    animateCounter(h3, 0, target, 2000);
-                }
-            }
-        }
-    });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('.stat-item').forEach(item => {
-    statObserver.observe(item);
+    document.querySelectorAll('.section-title').forEach(title => observer.observe(title));
 });
 
 // ========================================
@@ -411,7 +420,6 @@ const createParticles = () => {
 
 createParticles();
 
-// Traînée de la souris
 document.addEventListener('mousemove', (e) => {
     if (Math.random() > 0.85) {
         const trail = document.createElement('div');
@@ -477,30 +485,6 @@ window.addEventListener('load', () => {
 });
 
 // ========================================
-// FEATURE CARDS TILT EFFECT
-// ========================================
-
-document.querySelectorAll('.feature-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = (y - centerY) / 10;
-        const rotateY = (centerX - x) / 10;
-        
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-15px) scale(1.02)`;
-    });
-    
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-    });
-});
-
-// ========================================
 // GALLERY LIGHTBOX
 // ========================================
 
@@ -545,7 +529,6 @@ document.querySelectorAll('.gallery-item').forEach(item => {
             font-size: 40px;
             color: var(--primary-color);
             cursor: pointer;
-            transition: transform 0.3s ease;
         `;
         
         lightbox.appendChild(lightboxImg);
@@ -560,95 +543,10 @@ document.querySelectorAll('.gallery-item').forEach(item => {
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox || e.target === closeBtn) removeLightbox();
         });
-        
-        const closeOnEsc = (e) => {
-            if (e.key === 'Escape') {
-                removeLightbox();
-                document.removeEventListener('keydown', closeOnEsc);
-            }
-        };
-        document.addEventListener('keydown', closeOnEsc);
     });
 });
 
-// ========================================
-// BUTTON RIPPLE EFFECT
-// ========================================
-
-document.querySelectorAll('.btn-primary, .btn-download, .platform-link').forEach(button => {
-    button.addEventListener('click', function(e) {
-        const ripple = document.createElement('span');
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-        
-        ripple.style.cssText = `
-            position: absolute;
-            width: ${size}px;
-            height: ${size}px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            left: ${x}px;
-            top: ${y}px;
-            pointer-events: none;
-            animation: ripple-effect 0.6s ease-out;
-        `;
-        
-        this.style.position = 'relative';
-        this.style.overflow = 'hidden';
-        this.appendChild(ripple);
-        
-        setTimeout(() => ripple.remove(), 600);
-    });
-});
-
-// ========================================
-// PARALLAX & GLITCH EFFECTS
-// ========================================
-
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero-content');
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-        hero.style.opacity = 1 - (scrolled / 700);
-    }
-});
-
-const glitchTitle = document.querySelector('.glitch');
-if (glitchTitle) {
-    setInterval(() => {
-        if (Math.random() > 0.95) {
-            glitchTitle.style.textShadow = `
-                ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px 0 #ff3b3b,
-                ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px 0 #00ffff
-            `;
-            setTimeout(() => {
-                glitchTitle.style.textShadow = '';
-            }, 50);
-        }
-    }, 100);
-}
-
-// Easter Egg: Konami Code
-let konamiCode = [];
-const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-
-document.addEventListener('keydown', (e) => {
-    konamiCode.push(e.key);
-    konamiCode = konamiCode.slice(-10);
-    
-    if (konamiCode.join(',') === konamiSequence.join(',')) {
-        document.body.style.animation = 'glitchScreen 0.5s';
-        setTimeout(() => {
-            alert('🎮 Code Konami activé ! Vous avez trouvé le secret des Backrooms !');
-            document.body.style.animation = '';
-        }, 500);
-    }
-});
-
-// Injection dynamique du CSS pour les animations JS
+// Styles CSS d'animation générés dynamiquement
 const globalAnimStyle = document.createElement('style');
 globalAnimStyle.textContent = `
     @keyframes float-particle {
@@ -667,9 +565,6 @@ globalAnimStyle.textContent = `
     @keyframes fadeOut {
         to { opacity: 0; }
     }
-    @keyframes ripple-effect {
-        to { transform: scale(4); opacity: 0; }
-    }
     @keyframes slideIn {
         from { transform: translateX(400px); opacity: 0; }
         to { transform: translateX(0); opacity: 1; }
@@ -678,15 +573,7 @@ globalAnimStyle.textContent = `
         from { transform: translateX(0); opacity: 1; }
         to { transform: translateX(400px); opacity: 0; }
     }
-    @keyframes glitchScreen {
-        0%, 100% { filter: none; }
-        25% { filter: hue-rotate(90deg) saturate(3); }
-        50% { filter: invert(1); }
-        75% { filter: hue-rotate(270deg) saturate(3); }
-    }
 `;
 document.head.appendChild(globalAnimStyle);
 
 console.log('%c🚪 Bienvenue dans les Backrooms...', 'color: #d4c5a0; font-size: 20px; font-weight: bold;');
-console.log('%cSi vous voyez ceci, vous êtes déjà trop profond...', 'color: #ff3b3b; font-size: 14px;');
-
